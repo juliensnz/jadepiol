@@ -1,5 +1,6 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
-import { ServerStyleSheet } from 'styled-components'
+import { ServerStyleSheet } from 'styled-components';
+import {getLang, getLocale} from '../infrastructure/locale';
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
@@ -30,7 +31,7 @@ export default class MyDocument extends Document {
 
   render() {
     return (
-      <Html lang="fr">
+      <Html lang={getLang(getLocale())}>
         <Head>
           <link
             rel="preload"
@@ -38,8 +39,6 @@ export default class MyDocument extends Document {
             crossOrigin=""
             rel="stylesheet"
           />
-          <title>Jade Piol</title>
-          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
           <script async src="https://www.googletagmanager.com/gtag/js?id=UA-180428184-1"></script>
           <script
             dangerouslySetInnerHTML={{

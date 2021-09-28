@@ -3,12 +3,16 @@ import Link from 'next/link';
 
 import styled from 'styled-components';
 
-import {Client} from '../prismic-configuration';
 import {Flowered} from '../components/Flowered';
+import {getMenuItems, getHomePage, HomePage, MenuItem as MenuItemModel} from '../infrastructure/prismic';
+import {getLocale} from '../infrastructure/locale';
+import {Loading} from '../components/Loading';
+import {Blur} from '../components/Blur';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  position: absolute;
 `;
 const Header = styled.header`
   display: flex;
@@ -55,9 +59,20 @@ const Content = styled.div`
   position: relative;
 `;
 
+const Gradient = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 2400px;
+
+  background: linear-gradient(#c6c4f3, rgba(255, 255, 255, 0));
+`;
+
 const SubTitle = styled.div`
   margin-left: 8vw;
   margin-top: 9vw;
+  margin-bottom: 5vw;
   overflow: hidden;
 
   @media screen and (max-width: 500px) {
@@ -72,55 +87,56 @@ const Scale = styled.div`
     transform: scale(1.2);
   }
 `;
-
-type PrismicElement = {
-  type: string;
-  text: string;
-  spans: any[];
-};
-
 type HomeProps = {
-  elements: {
-    title: [PrismicElement];
-    subtitle: [PrismicElement];
-  };
+  page: HomePage;
+  menuItems: MenuItemModel[];
 };
 
-const Home = ({elements}: HomeProps) => {
+const Home = ({page, menuItems}: HomeProps) => {
   return (
-    <Container>
-      <Header>
-        <Title>{elements.title[0].text}</Title>
-      </Header>
-      <Menu>
-        <MenuItem href="mailto:bonjour@jadepiol.com?subject=Bonjour%20Jade">Contact</MenuItem>
-      </Menu>
-      <Content>
-        <SubTitle>
-          <Scale>
-            <Flowered
-              style={{
-                fontFamily: 'Playfair Display',
-                fontSize: '13vw',
-                textTransform: 'uppercase',
-                fontWeight: 'normal',
-              }}
-            >
-              {elements.subtitle[0].text}
-            </Flowered>
-          </Scale>
-        </SubTitle>
-      </Content>
-    </Container>
+    <>
+      <Gradient />
+      <Container>
+        <Header>
+          <Title>{page.title}</Title>
+        </Header>
+        <Menu>
+          {menuItems.map((menuItem: MenuItemModel) => (
+            <MenuItem key={menuItem.label} href={menuItem.link}>
+              {menuItem.label}
+            </MenuItem>
+          ))}
+        </Menu>
+        <Content>
+          <SubTitle>
+            <Scale>
+              <Flowered
+                style={{
+                  fontFamily: 'Playfair Display',
+                  fontSize: '13vw',
+                  textTransform: 'uppercase',
+                  fontWeight: 'normal',
+                }}
+              >
+                {page.subtitle}
+              </Flowered>
+            </Scale>
+          </SubTitle>
+          <Blur />
+        </Content>
+      </Container>
+      <Loading />
+    </>
   );
 };
 
 export async function getServerSideProps({preview = null, previewData = {}}: {preview: any; previewData: any}) {
   const {ref} = previewData;
-  const home = await Client().getSingle('home', ref ? {ref} : {});
+
   return {
     props: {
-      elements: home.data,
+      page: await getHomePage(ref),
+      menuItems: await getMenuItems(getLocale()),
       preview,
     },
   };

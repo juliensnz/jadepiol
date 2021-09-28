@@ -1,4 +1,6 @@
+import Head from 'next/head';
 import {createGlobalStyle, ThemeProvider} from 'styled-components';
+import {getLocale, LocaleContext} from '../infrastructure/locale';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -14,12 +16,16 @@ const theme = {
 
 function MyApp({Component, pageProps}) {
   return (
-    <>
+    <LocaleContext.Provider value={getLocale()}>
+      <Head>
+        <title>Jade Piol</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <ThemeProvider theme={theme}>
         <Component {...pageProps} />
         <GlobalStyle />
       </ThemeProvider>
-    </>
+    </LocaleContext.Provider>
   );
 }
 

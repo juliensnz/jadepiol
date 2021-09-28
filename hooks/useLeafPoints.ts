@@ -49,7 +49,7 @@ const createPoint = (coordinate: Coordinate, scale: number, bouquetIndex: number
     ...coordinate,
     timing: Math.floor(Math.random() * TIMING_RANDOMESS) + TIMING_MINIMUM,
     growthLength: Math.floor(Math.random() * GROWTH_LENGTH + 4),
-    growthDelay: Math.floor((Math.random() * index) / 10) * 5,
+    growthDelay: Math.floor((Math.random() * index) / 20) * 1,
     angle: Math.floor(Math.random() * POSSIBLE_ANGLE),
     gap: ((bouquetIndex % 2) * 2 - 1) * Math.floor(Math.random() * GAP_ANGLE),
     scale: scale + Math.random() * scale,
