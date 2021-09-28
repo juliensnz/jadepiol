@@ -29,6 +29,8 @@ const Menu = styled.div`
   position: absolute;
   top: 0;
   right: 0;
+  display: flex;
+  flex-direction: column;
 
   @media screen and (max-width: 500px) {
     top: auto;
@@ -94,6 +96,7 @@ const Home = ({elements}: HomeProps) => {
       </Header>
       <Menu>
         <MenuItem href="mailto:bonjour@jadepiol.com?subject=Bonjour%20Jade">Contact</MenuItem>
+        <MenuItem href="https://www.etsy.com/fr/shop/JadePiolShop">Boutique</MenuItem>
       </Menu>
       <Content>
         <SubTitle>
