@@ -97,6 +97,7 @@ const Home = ({elements}: HomeProps) => {
       <Menu>
         <MenuItem href="mailto:bonjour@jadepiol.com?subject=Bonjour%20Jade">Contact</MenuItem>
         <MenuItem href="https://www.etsy.com/fr/shop/JadePiolShop">Boutique</MenuItem>
+        <MenuItem href="https://www.instagram.com/jade.piol/">Instagram</MenuItem>
       </Menu>
       <Content>
         <SubTitle>
